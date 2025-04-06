@@ -22,7 +22,8 @@ class SpectrogramDataset(Dataset):
 
     def transform(self, audio):
         spec = librosa.amplitude_to_db(self.spec(audio))
-        spec = torch.Tensor(spec).to(device)
+        spec = torch.Tensor(spec).to(device)[:, 1:, :]
+        spec = torch.stack([spec, spec, spec], dim=3)
         return spec
 
     def __len__(self):
